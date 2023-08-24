@@ -13,11 +13,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using ProjetoRodolfo.View;
 
 namespace ProjetoRodolfo
 {
     public partial class FormLogin : Form
     {
+        private formProcessos formSecundario;
         public FormLogin()
         {
             InitializeComponent();
@@ -39,6 +41,9 @@ namespace ProjetoRodolfo
             if (user !=null)
             {
                 MessageBox.Show("Login efetuado com sucesso");
+                formProcessos formSecundario = new formProcessos();
+                formSecundario.Show();  
+                this.Hide();
             } else
             {
                 MessageBox.Show("Usuario ou senha incorretas");
@@ -71,6 +76,15 @@ namespace ProjetoRodolfo
             usuarioController.RegisterUser(newUser);
             MessageBox.Show("Novo usuário registrado com sucesso!");
         }
-        
+
+        private void FormLogin_Load(object sender, EventArgs e)
+        {
+            BackColor = System.Drawing.ColorTranslator.FromHtml("#008BD6");
+        }
+
+        private void FormSecundario_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();  // Mostra novamente o formulário principal ao fechar o secundário
+        }
     }
 }
