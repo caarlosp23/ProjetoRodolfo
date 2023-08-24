@@ -45,6 +45,10 @@ namespace ProjetoRodolfo.View
 
            
             LoadProcessosToDataGridView();
+
+            dtGridProcessos.CellClick += dtGridProcessos_CellClick;
+            dtGridProcessos.SelectionMode = DataGridViewSelectionMode.CellSelect; // Modo de seleção de célula
+            dtGridProcessos.MultiSelect = false;
         }
 
         private void dtGridProcessos_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -71,6 +75,27 @@ namespace ProjetoRodolfo.View
             FormAdicionar X = new FormAdicionar();
             X.Show();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormEditar X = new FormEditar();
+            X.Show();
+        }
+
+        private void dtGridProcessos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Verifica se não é um cabeçalho de coluna ou linha
+            {
+                dtGridProcessos.CurrentCell = dtGridProcessos.Rows[e.RowIndex].Cells[e.ColumnIndex]; // Define a célula atual
+                dtGridProcessos.BeginEdit(true); // Inicia a edição da célula (o que também a seleciona)
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            LoadProcessosToDataGridView();
+        }
+    }
     }
 
-}
+
