@@ -52,6 +52,7 @@
             this.btnCancelarFormAdc.TabIndex = 27;
             this.btnCancelarFormAdc.Text = "Cancelar";
             this.btnCancelarFormAdc.UseVisualStyleBackColor = true;
+            this.btnCancelarFormAdc.Click += new System.EventHandler(this.btnCancelarFormAdc_Click);
             // 
             // btnInserir
             // 
@@ -61,6 +62,7 @@
             this.btnInserir.TabIndex = 26;
             this.btnInserir.Text = "Atualizar";
             this.btnInserir.UseVisualStyleBackColor = true;
+            this.btnInserir.Click += new System.EventHandler(this.btnInserir_Click);
             // 
             // label6
             // 
@@ -189,6 +191,7 @@
             this.Controls.Add(this.txtNomeProcesso);
             this.Name = "FormEditar";
             this.Text = "FormEditar";
+            this.Load += new System.EventHandler(this.FormEditar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

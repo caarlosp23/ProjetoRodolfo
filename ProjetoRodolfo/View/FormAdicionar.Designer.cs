@@ -168,6 +168,7 @@
             this.btnCancelarFormAdc.TabIndex = 13;
             this.btnCancelarFormAdc.Text = "Cancelar";
             this.btnCancelarFormAdc.UseVisualStyleBackColor = true;
+            this.btnCancelarFormAdc.Click += new System.EventHandler(this.btnCancelarFormAdc_Click);
             // 
             // FormAdicionar
             // 
@@ -190,6 +191,7 @@
             this.Controls.Add(this.txtNomeProcesso);
             this.Name = "FormAdicionar";
             this.Text = "Adicionar";
+            this.Load += new System.EventHandler(this.FormAdicionar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

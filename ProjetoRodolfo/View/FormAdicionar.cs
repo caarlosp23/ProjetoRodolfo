@@ -16,7 +16,8 @@ namespace ProjetoRodolfo.View
     
     public partial class FormAdicionar : Form
     {
-        private formProcessos tes_;
+        
+        public Button btnInserirr;
         public FormAdicionar()
         {
             InitializeComponent();
@@ -53,7 +54,18 @@ namespace ProjetoRodolfo.View
 
             MessageBox.Show("Processo inserido com sucesso!");
 
-           
+            this.Close();
+        }
+
+        private void FormAdicionar_Load(object sender, EventArgs e)
+        {
+            CenterToScreen();
+            BackColor = System.Drawing.ColorTranslator.FromHtml("#008BD6");
+        }
+
+        private void btnCancelarFormAdc_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

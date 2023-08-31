@@ -31,23 +31,25 @@
             this.dtGridProcessos = new System.Windows.Forms.DataGridView();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnAdicionar = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnListar = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtBoxPesquisa = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtGridProcessos)).BeginInit();
             this.SuspendLayout();
             // 
             // dtGridProcessos
             // 
+            this.dtGridProcessos.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dtGridProcessos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtGridProcessos.Location = new System.Drawing.Point(12, 107);
             this.dtGridProcessos.Name = "dtGridProcessos";
             this.dtGridProcessos.RowHeadersWidth = 51;
             this.dtGridProcessos.RowTemplate.Height = 24;
+            this.dtGridProcessos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dtGridProcessos.Size = new System.Drawing.Size(879, 353);
             this.dtGridProcessos.TabIndex = 0;
-            this.dtGridProcessos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGridProcessos_CellClick);
+            this.dtGridProcessos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGridProcessos_CellContentClick);
             this.dtGridProcessos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGridProcessos_CellContentClick);
             // 
             // btnBuscar
@@ -58,6 +60,7 @@
             this.btnBuscar.TabIndex = 1;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // btnAdicionar
             // 
@@ -69,15 +72,15 @@
             this.btnAdicionar.UseVisualStyleBackColor = true;
             this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
             // 
-            // button3
+            // btnListar
             // 
-            this.button3.Location = new System.Drawing.Point(816, 56);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Listar";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnListar.Location = new System.Drawing.Point(816, 56);
+            this.btnListar.Name = "btnListar";
+            this.btnListar.Size = new System.Drawing.Size(75, 23);
+            this.btnListar.TabIndex = 3;
+            this.btnListar.Text = "Listar";
+            this.btnListar.UseVisualStyleBackColor = true;
+            this.btnListar.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -87,13 +90,15 @@
             this.button4.TabIndex = 4;
             this.button4.Text = "Excluir";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // textBox1
+            // txtBoxPesquisa
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 57);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(309, 22);
-            this.textBox1.TabIndex = 5;
+            this.txtBoxPesquisa.Location = new System.Drawing.Point(12, 57);
+            this.txtBoxPesquisa.Name = "txtBoxPesquisa";
+            this.txtBoxPesquisa.Size = new System.Drawing.Size(309, 22);
+            this.txtBoxPesquisa.TabIndex = 5;
+            this.txtBoxPesquisa.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button1
             // 
@@ -111,9 +116,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(915, 494);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtBoxPesquisa);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnListar);
             this.Controls.Add(this.btnAdicionar);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.dtGridProcessos);
@@ -132,9 +137,9 @@
         private System.Windows.Forms.DataGridView dtGridProcessos;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Button btnAdicionar;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnListar;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtBoxPesquisa;
         private System.Windows.Forms.Button button1;
     }
 }

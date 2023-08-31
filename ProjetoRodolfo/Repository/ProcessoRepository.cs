@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using ProjetoRodolfo.Model;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,6 @@ namespace ProjetoRodolfo.Repository
 
         }
 
-
-       
         public List<Processo> GetAllProcessos()
         {
             return _processoCollection.Find(_ => true).ToList();
@@ -40,11 +39,25 @@ namespace ProjetoRodolfo.Repository
         }
         public void UpdateProcesso(Processo updateProcesso)
         {
-           
+
+            var filter = Builders<Processo>.Filter.Eq(p => p.Id, updateProcesso.Id);
+            var update = Builders<Processo>.Update
+                .Set(p => p.NomeProcesso, updateProcesso.NomeProcesso)
+                .Set(p => p.NomeUsuario, updateProcesso.NomeUsuario)
+                .Set(p => p.Prioridade, updateProcesso.Prioridade)
+                .Set(p => p.UsoCpu, updateProcesso.UsoCpu)
+                .Set(p => p.Estado, updateProcesso.Estado)
+                .Set(p => p.Memoria, updateProcesso.Memoria);
+        
+             _processoCollection.UpdateOne(filter, update);
+
         }
-        public void DeleteProcesso(Processo newProceso)
+        public void DeleteProcesso(string idProcesso)
         {
-            
+            _processoCollection.DeleteOne(p => p.NomeProcesso == idProcesso.ToString());
+     
         }
+
+        
     }
 }

@@ -23,6 +23,7 @@ namespace ProjetoRodolfo
         public FormLogin()
         {
             InitializeComponent();
+            CenterToScreen();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)

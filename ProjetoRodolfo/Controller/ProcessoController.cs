@@ -1,4 +1,5 @@
-﻿using ProjetoRodolfo.Model;
+﻿using MongoDB.Bson;
+using ProjetoRodolfo.Model;
 using ProjetoRodolfo.Repository;
 using System;
 using System.Collections.Generic;
@@ -23,22 +24,40 @@ namespace ProjetoRodolfo.Controller
 
             _processoRepository.AddProcesso(novoProcesso);
         }
-        public void GetProcesso(Processo novoProcesso)
+        public Processo GetProcesso(string novoProcesso)
         {
 
-            _processoRepository.AddProcesso(novoProcesso);
+            return _processoRepository.GetProcesso(novoProcesso);
         }
 
      
-        public void UpdateProcesso(Processo novoProcesso)
+        public void UpdateProcesso(ObjectId id,string nomeProcesso, string novoUser, string nPriori, string nUso, string nEstado, int nMememoria)
         {
 
-            _processoRepository.AddProcesso(novoProcesso);
+
+            var processo = new Processo
+            {
+                    Id = id,
+                    NomeProcesso = nomeProcesso,
+                    NomeUsuario = novoUser,
+                    Prioridade = nPriori,
+                    UsoCpu = nUso,
+                    Estado = nEstado,
+                    Memoria= nMememoria
+                };
+
+                _processoRepository.UpdateProcesso(processo);
+           
         }
-        public void DeleteProcesso(Processo novoProcesso)
+        public void DeleteProcesso(string processo)
         {
 
-            _processoRepository.AddProcesso(novoProcesso);
+            _processoRepository.DeleteProcesso(processo);
+        }
+
+        public List<Processo> GetAllProcessos()
+        {
+            return _processoRepository.GetAllProcessos();
         }
 
     }
