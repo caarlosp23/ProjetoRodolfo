@@ -4,3 +4,4 @@ Sistema simula o gerenciamento de programas feito em C# no padrão MVC e persist
 
 - Feito até então a tela de Login do Projeto.
 - Implementado Entidade de Processo e suas telas.
+- Finalizado implementação do CRUD do Processos juntamente com suas telas e datagrid.
