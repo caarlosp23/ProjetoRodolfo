@@ -83,11 +83,14 @@
             this.cmbEstado.Items.AddRange(new object[] {
             "PRONTO",
             "EXECUÇÃO",
-            "ESPERA"});
+            "ESPERA",
+            "INICIO",
+            "TERMINO"});
             this.cmbEstado.Location = new System.Drawing.Point(214, 183);
             this.cmbEstado.Name = "cmbEstado";
             this.cmbEstado.Size = new System.Drawing.Size(100, 24);
             this.cmbEstado.TabIndex = 4;
+            this.cmbEstado.SelectedIndexChanged += new System.EventHandler(this.cmbEstado_SelectedIndexChanged);
             // 
             // txtEspacoMem
             // 

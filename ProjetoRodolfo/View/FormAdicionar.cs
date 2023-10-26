@@ -67,5 +67,10 @@ namespace ProjetoRodolfo.View
         {
             this.Close();
         }
+
+        private void cmbEstado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
