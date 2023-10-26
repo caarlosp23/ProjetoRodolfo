@@ -47,10 +47,11 @@
             this.dtGridProcessos.RowHeadersWidth = 51;
             this.dtGridProcessos.RowTemplate.Height = 24;
             this.dtGridProcessos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dtGridProcessos.Size = new System.Drawing.Size(879, 353);
+            this.dtGridProcessos.Size = new System.Drawing.Size(879, 414);
             this.dtGridProcessos.TabIndex = 0;
             this.dtGridProcessos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGridProcessos_CellContentClick);
             this.dtGridProcessos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGridProcessos_CellContentClick);
+            this.dtGridProcessos.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dtGridProcessos_CellFormatting);
             // 
             // btnBuscar
             // 
@@ -114,7 +115,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(915, 494);
+            this.ClientSize = new System.Drawing.Size(908, 541);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtBoxPesquisa);
             this.Controls.Add(this.button4);

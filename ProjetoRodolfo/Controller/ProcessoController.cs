@@ -55,6 +55,12 @@ namespace ProjetoRodolfo.Controller
             _processoRepository.DeleteProcesso(processo);
         }
 
+        public void DeleteTermino(string processo)
+        {
+
+            _processoRepository.DeleteTermino(processo);
+        }
+
         public List<Processo> GetAllProcessos()
         {
             return _processoRepository.GetAllProcessos();

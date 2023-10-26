@@ -28,6 +28,7 @@ namespace ProjetoRodolfo.View
             //ProcessoExecucao();
 
 
+
         }
 
         private void FormProcessos_FormClosed(object sender, FormClosedEventArgs e)
@@ -37,6 +38,7 @@ namespace ProjetoRodolfo.View
 
         public void Processos_Load(object sender, EventArgs e)
         {
+
 
             BackColor = System.Drawing.ColorTranslator.FromHtml("#008BD6");
             string connectionString = "mongodb://localhost:27017";
@@ -62,7 +64,7 @@ namespace ProjetoRodolfo.View
             //dtGridProcessos.SelectionMode = DataGridViewSelectionMode.CellSelect; // Modo de seleção de célula
             //dtGridProcessos.MultiSelect = false;
 
-
+            dtGridProcessos.ClearSelection();
         }
 
         private void dtGridProcessos_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -71,6 +73,7 @@ namespace ProjetoRodolfo.View
             {
                 dtGridProcessos.Rows[e.RowIndex].Selected = true;
             }
+
 
 
         }
@@ -85,74 +88,121 @@ namespace ProjetoRodolfo.View
             var pegaProcessos = _processoController.GetAllProcessos();
 
             alteraEstado();
-            
+
 
         }
 
         public async void alteraEstado()
-
         {
-            
-                    var espera = GetEspera();
-                    var inicio = GetInicio();
 
-                    if (espera != null)
-                    {
-                        _processoController.UpdateProcesso(espera.Id, espera.NomeProcesso, espera.NomeUsuario, espera.Prioridade, espera.UsoCpu, espera.Estado = "PRONTO", espera.Memoria);
-                    }
+            var qtdProcesso = _processoController.GetAllProcessos().Count;
 
+            if (qtdProcesso > 0 && qtdProcesso <= 10)
+            {
+                var espera = GetEspera();
+                var inicio = GetInicio();
+
+                if (espera != null)
+                {
+                    _processoController.UpdateProcesso(espera.Id, espera.NomeProcesso, espera.NomeUsuario, espera.Prioridade, espera.UsoCpu, espera.Estado = "PRONTO", espera.Memoria);
+                }
                 if (inicio != null)
                 {
-                _processoController.UpdateProcesso(inicio.Id, inicio.NomeProcesso, inicio.NomeUsuario, inicio.Prioridade, inicio.UsoCpu, inicio.Estado = "PRONTO", inicio.Memoria);
+                    _processoController.UpdateProcesso(inicio.Id, inicio.NomeProcesso, inicio.NomeUsuario, inicio.Prioridade, inicio.UsoCpu, inicio.Estado = "PRONTO", inicio.Memoria);
                 }
+                var execucao = GetExec();
+                if (execucao == null)
+                {
+                    var pronto = GetPronto();
+                    pronto.Estado = "EXECUÇÃO";
+                    _processoController.UpdateProcesso(pronto.Id, pronto.NomeProcesso, pronto.NomeUsuario, pronto.Prioridade, pronto.UsoCpu, pronto.Estado, pronto.Memoria);
+                    criaProcesso();
+                    btnListar.PerformClick();
 
-            var execucao = GetExec();
-                    if (execucao == null)
+                    DelayAsync(5000);
+                }
+                else
+                {
+                    var pronto = GetPronto();
+                    if (qtdProcesso < 10)
                     {
-                        var pronto = GetPronto();
-                        pronto.Estado = "EXECUÇÃO";
-                        _processoController.UpdateProcesso(pronto.Id, pronto.NomeProcesso, pronto.NomeUsuario, pronto.Prioridade, pronto.UsoCpu, pronto.Estado, pronto.Memoria);
+                        string[] estados = { "PRONTO", "ESPERA" };
 
-                        btnListar.PerformClick();
-                             DelayAsync(5000);
+                        execucao.Estado = GerarNomeAleatorio(estados);
                     }
                     else
                     {
                         string[] estados = { "PRONTO", "ESPERA", "TERMINO" };
-                        var pronto = GetPronto();
-                        execucao.Estado = GerarNomeAleatorio(estados);
 
-                        if (execucao.Estado == "TERMINO")
-                        {
-                            _processoController.DeleteProcesso(execucao.NomeProcesso);
-                            criaProcesso();
-                            //_processoController.UpdateProcesso(pronto.Id, pronto.NomeProcesso, pronto.NomeUsuario, pronto.Prioridade, pronto.UsoCpu, pronto.Estado = "EXECUÇÃO", pronto.Memoria);
-                            btnListar.PerformClick();
-                            DelayAsync(5000);
-                        }
-                        else
-                        {
-                            _processoController.UpdateProcesso(execucao.Id, execucao.NomeProcesso, execucao.NomeUsuario, execucao.Prioridade, execucao.UsoCpu, execucao.Estado, execucao.Memoria);
-                            _processoController.UpdateProcesso(pronto.Id, pronto.NomeProcesso, pronto.NomeUsuario, pronto.Prioridade, pronto.UsoCpu, pronto.Estado = "EXECUÇÃO", pronto.Memoria);
-                            btnListar.PerformClick();
-                            DelayAsync(5000);
-                         }
+                        execucao.Estado = GerarNomeAleatorio(estados);
                     }
 
-    }
+
+                    _processoController.UpdateProcesso(execucao.Id, execucao.NomeProcesso, execucao.NomeUsuario, execucao.Prioridade, execucao.UsoCpu, execucao.Estado, execucao.Memoria);
+                    btnListar.PerformClick();
+                    DelayAsync(5000);
+                    if (execucao.Estado == "TERMINO")
+                    {
+
+                        _processoController.UpdateProcesso(execucao.Id, execucao.NomeProcesso, execucao.NomeUsuario, execucao.Prioridade, execucao.UsoCpu, execucao.Estado = "TERMINO", execucao.Memoria);
+                        btnListar.PerformClick();
+                        _processoController.UpdateProcesso(pronto.Id, pronto.NomeProcesso, pronto.NomeUsuario, pronto.Prioridade, pronto.UsoCpu, pronto.Estado = "EXECUÇÃO", pronto.Memoria);
+                        criaProcesso();
+
+                        btnListar.PerformClick();
+                        DelayAsync(5000);
+
+
+                    }
+                    else
+                    {
+                        if (execucao != null)
+                        {
+                            _processoController.UpdateProcesso(execucao.Id, execucao.NomeProcesso, execucao.NomeUsuario, execucao.Prioridade, execucao.UsoCpu, execucao.Estado, execucao.Memoria);
+                        }
+
+                        if (pronto != null)
+                        {
+                            _processoController.UpdateProcesso(pronto.Id, pronto.NomeProcesso, pronto.NomeUsuario, pronto.Prioridade, pronto.UsoCpu, pronto.Estado = "EXECUÇÃO", pronto.Memoria);
+                        }
+                        //
+                        //_processoController.UpdateProcesso(execucao.Id, execucao.NomeProcesso, execucao.NomeUsuario, execucao.Prioridade, execucao.UsoCpu, execucao.Estado, execucao.Memoria);
+                        //;
+                        btnListar.PerformClick();
+                        DelayAsync(5000);
+                    }
+
+                    criaProcesso();
+                    DelayAsync(5000);
+                }
+            }
+            else
+            {
+                criaProcesso();
+                DelayAsync(5000);
+            }
+
+            var termino = GetTermino();
+            if (termino != null)
+            {
+                _processoController.DeleteTermino(termino.Estado);
+            }
+
+
+        }
 
         public void criaProcesso()
         {
             Random x = new Random();
 
-             string[] processos = { "Editor", "Calculadora", "Navegador", "Terminal", "Jogo" };
-             string[] usuarios = { "Alice", "Bob", "Charlie", "David", "Eve" };
-             string[] prioridades = { "ALTA", "MÉDIA", "BAIXA" };
-             int memoria = x.Next(256, 8192);
+            string[] processos = { "Editor", "Calculadora", "Navegador", "Terminal", "Jogo" };
+            string[] usuarios = { "Alice", "Bob", "Charlie", "David", "Eve" };
+            string[] prioridades = { "ALTA", "MÉDIA", "BAIXA" };
+            int memoria = x.Next(256, 8192);
 
             var nProcessosTela = _processoController.GetAllProcessos();
 
-            if(nProcessosTela.Count() < 10)
+            if (nProcessosTela.Count() < 10)
             {
                 var processo = new Processo
                 {
@@ -167,7 +217,7 @@ namespace ProjetoRodolfo.View
                 _processoController.AddProcesso(processo);
                 LoadProcessosToDataGridView();
             }
-            
+
         }
 
         public string GerarNomeAleatorio(string[] opcoes)
@@ -190,10 +240,10 @@ namespace ProjetoRodolfo.View
             // Preencher o DataGridView com os dados dos processos
             foreach (Processo processo in processos)
             {
-                dtGridProcessos.Rows.Add(processo.Id,processo.NomeProcesso,processo.Memoria, processo.UsoCpu, processo.NomeUsuario, processo.Prioridade, processo.Estado);
+                dtGridProcessos.Rows.Add(processo.Id, processo.NomeProcesso, processo.Memoria, processo.UsoCpu, processo.NomeUsuario, processo.Prioridade, processo.Estado);
             }
 
-           // ProcessoExecucao();
+            // ProcessoExecucao();
         }
 
         private async void btnAdicionar_Click(object sender, EventArgs e)
@@ -201,9 +251,9 @@ namespace ProjetoRodolfo.View
 
 
             await RunLoopAsync();
-            
-            
-            
+
+
+
         }
 
         private async Task RunLoopAsync()
@@ -241,7 +291,7 @@ namespace ProjetoRodolfo.View
                 // Ordene os processos prontos por alguma lógica, se necessário
                 // Aqui, estou assumindo uma ordem aleatória
                 Random random = new Random();
-                
+
                 return processosProntos[0];
             }
 
@@ -278,15 +328,22 @@ namespace ProjetoRodolfo.View
 
             return null;
         }
-        
 
-
-        public bool HasMoreProcessesReady()
+        public Processo GetTermino()
         {
-            return _processoController.GetAllProcessos().Any(p => p.Estado == "PRONTO");
+            var processosProntos = _processoController.GetAllProcessos().Where(p => p.Estado == "TERMINO").ToList();
+
+            if (processosProntos.Count > 0)
+            {
+                // Ordene os processos prontos por alguma lógica, se necessário
+                // Aqui, estou assumindo uma ordem aleatória
+                return processosProntos[0];
+            }
+
+            return null;
         }
 
-       
+
 
 
 
@@ -308,7 +365,7 @@ namespace ProjetoRodolfo.View
                 string estado = selectedRow.Cells["Estado"].Value.ToString();
 
 
-                using (var form2 = new FormEditar(ObjectId.Parse(id), nome, nomeUsuario, prioridade, cpu, estado,memoria))
+                using (var form2 = new FormEditar(ObjectId.Parse(id), nome, nomeUsuario, prioridade, cpu, estado, memoria))
                 {
                     form2.Id = ObjectId.Parse(id);
                     form2.processoOld = nome;
@@ -355,44 +412,87 @@ namespace ProjetoRodolfo.View
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            string busca =txtBoxPesquisa.Text;
+            string busca = txtBoxPesquisa.Text;
             Processo x = new Processo();
 
             x = _processoController.GetProcesso(busca);
             dtGridProcessos.Rows.Clear();
-            dtGridProcessos.Rows.Add(x.Id,x.NomeProcesso, x.Memoria, x.UsoCpu, x.NomeUsuario, x.Prioridade, x.Estado);
+            dtGridProcessos.Rows.Add(x.Id, x.NomeProcesso, x.Memoria, x.UsoCpu, x.NomeUsuario, x.Prioridade, x.Estado);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-          
 
-                if (dtGridProcessos.SelectedRows.Count > 0)
+
+            if (dtGridProcessos.SelectedRows.Count > 0)
+            {
+                var selectedRow = dtGridProcessos.SelectedRows[0];
+                string objectIdStr = selectedRow.Cells["Nome do Processo"].Value.ToString(); // Obter o valor do ID como string
+                if (objectIdStr != null)
                 {
-                    var selectedRow = dtGridProcessos.SelectedRows[0];
-                    string objectIdStr = selectedRow.Cells["Nome do Processo"].Value.ToString(); // Obter o valor do ID como string
-                    if (objectIdStr!= null)
-                    {
                     DialogResult result = MessageBox.Show("Tem certeza que deseja excluir o processo?", "Confirmação de Exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
-                       _processoController.DeleteProcesso(objectIdStr.ToString());
+                        _processoController.DeleteProcesso(objectIdStr.ToString());
                         LoadProcessosToDataGridView();
 
 
                     }
-                    
-                        
-                    }
-                    else
-                    {
-                        MessageBox.Show("ID inválido.");
-                    }
+
+
                 }
-            
+                else
+                {
+                    MessageBox.Show("ID inválido.");
+                }
+            }
+
+        }
+
+        private void dtGridProcessos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtGridProcessos.Rows[e.RowIndex];
+
+                // Verifique se a coluna "Status" tem o valor "Erro"
+                if (row.Cells["Estado"].Value != null && row.Cells["Estado"].Value.ToString() == "PRONTO")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Green;
+                    row.DefaultCellStyle.ForeColor = Color.White; // Cor do texto (opcional)
+                }
+
+                if (row.Cells["Estado"].Value != null && row.Cells["Estado"].Value.ToString() == "EXECUÇÃO")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Blue;
+                    row.DefaultCellStyle.ForeColor = Color.White; // Cor do texto (opcional)
+                }
+
+                if (row.Cells["Estado"].Value != null && row.Cells["Estado"].Value.ToString() == "TERMINO")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                    row.DefaultCellStyle.ForeColor = Color.White; // Cor do texto (opcional)
+                }
+
+
+                if (row.Cells["Estado"].Value != null && row.Cells["Estado"].Value.ToString() == "ESPERA")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Orange;
+                    row.DefaultCellStyle.ForeColor = Color.White; // Cor do texto (opcional)
+                }
+
+                if (row.Cells["Estado"].Value != null && row.Cells["Estado"].Value.ToString() == "INICIO")
+                {
+                    row.DefaultCellStyle.BackColor = Color.Purple;
+                    row.DefaultCellStyle.ForeColor = Color.White; // Cor do texto (opcional)
+                }
+
+                
+            }
         }
     }
 }
+
 
 

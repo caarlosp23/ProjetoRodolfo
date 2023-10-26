@@ -54,10 +54,16 @@ namespace ProjetoRodolfo.Repository
         }
         public void DeleteProcesso(string idProcesso)
         {
-            _processoCollection.DeleteOne(p => p.NomeProcesso == idProcesso.ToString());
+            _processoCollection.DeleteOne(p => p.NomeProcesso == idProcesso);
      
         }
 
-        
+        public void DeleteTermino(string idProcesso)
+        {
+            _processoCollection.DeleteOne(p => p.Estado == idProcesso);
+
+        }
+
+
     }
 }
